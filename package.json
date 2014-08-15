@@ -1,0 +1,34 @@
+{
+  "name": "kist-tabify",
+  "version": "0.0.0",
+  "description": "Simple tabs and accordion interface.",
+  "author": "Ivan Nikolić",
+  "license": "MIT",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-bump": "^0.0.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.4.1",
+    "grunt-jscs": "^0.6.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/niksy/kist-tabify.git"
+  },
+  "keywords": [
+    "tabs",
+    "accordion"
+  ],
+  "bugs": {
+    "url": "https://github.com/niksy/kist-tabify/issues"
+  },
+  "homepage": "https://github.com/niksy/kist-tabify"
+}

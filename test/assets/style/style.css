@@ -1,0 +1,43 @@
+body {
+	padding:30px;
+}
+
+.controls {
+	position:fixed; right:10px; top:10px;
+}
+
+.Tab-items,
+.Tab-panes {
+	font:14px Helvetica, sans-serif;
+}
+
+.Tab-toggler.is-active,
+.Tab-pane.is-active {
+	background:pink;
+}
+
+.Tab-items {
+	overflow:hidden;
+	list-style:none;
+	padding:0;
+}
+
+.Tab-item {
+	float:left;
+	margin-left:10px;
+}
+.Tab-item:first-child {
+	margin-left:0;
+}
+
+.Tab-toggler {
+	display:block;
+	padding:10px;
+	border:1px solid red;
+}
+
+.Tab-pane {
+	padding:10px;
+	margin-top:10px;
+	border:1px solid green;
+}
