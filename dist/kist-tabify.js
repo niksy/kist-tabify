@@ -1,4 +1,4 @@
-/*! kist-tabify 0.0.0 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-tabify 0.1.0 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
