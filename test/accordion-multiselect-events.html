@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Events</title>
+	<title>Accordion, multi select, events</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 	<link rel="stylesheet" href="assets/style/style.css" />
 </head>
@@ -33,6 +33,8 @@
 	<script>
 
 		$('.Tab').tabify({
+			type: 'accordion',
+			multiSelect: true,
 			select: function ( tab, pane ) {
 				console.info('Select');
 				console.info(arguments);

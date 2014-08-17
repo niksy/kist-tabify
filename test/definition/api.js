@@ -7,6 +7,9 @@ $('.container').tabify({
 	select: function ( tab, pane ) {
 
 	},
+	deselect: function ( tab, pane ) {
+
+	},
 	create: function () {
 
 	}
@@ -18,7 +21,10 @@ $('.container').tabify({
 	tab: '.tab',
 	pane: '.pane',
 	namespace: 'Foo',
-	select: function ( tab, pane, isActive ) {
+	select: function ( tab, pane ) {
+
+	},
+	deselect: function ( tab, pane ) {
 
 	},
 	create: function () {

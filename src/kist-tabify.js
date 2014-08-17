@@ -360,8 +360,34 @@
 		 */
 		select: function ( index ) {
 
+			this.activeTab = this.dom.tab.filter('.' + this.options.classes.isActive);
+			this.activePane = this.dom.pane.filter('.' + this.options.classes.isActive);
+
 			this.newTab  = this.dom.tab.eq(index);
 			this.newPane = this.dom.pane.eq(index);
+
+			this.isAlreadyActive = isAlreadyActiveState.call(this, this.newTab, this.newPane);
+
+			if ( this.options.changeURL && this.newTab.is('a') && hasPushState ) {
+				history.pushState({}, '', this.newTab.attr('href'));
+			}
+
+		},
+
+		/**
+		 * @param  {Integer} index
+		 *
+		 * @return {}
+		 */
+		triggerAction: function ( index ) {
+
+			if ( !this.isAlreadyActive ) {
+				if ( (this.activeTab.length || this.activePane.length) && !isAlreadyActiveState.call(this, this.activeTab, this.activePane) ) {
+					this.options.deselect.call(this.element, this.activeTab, this.activePane);
+				}
+				this.options.select.call(this.element, this.newTab, this.newPane);
+				this.current = index;
+			}
 
 		},
 
@@ -418,6 +444,7 @@
 			pane: '> div > div',
 			changeURL: false,
 			select: function () {},
+			deselect: function () {},
 			create: function () {},
 			namespace: plugin.ns.css
 		}
@@ -443,22 +470,13 @@
 		select: function ( index ) {
 			Tabs._super.select.apply(this, arguments);
 
-			var isAlreadyActive = isAlreadyActiveState.call(this, this.newTab, this.newPane);
-
 			this.toggleItem(this.dom.tab, false, 'tab');
 			this.toggleItem(this.dom.pane, false, 'pane');
-
-			if ( this.options.changeURL && this.newTab.is('a') && hasPushState ) {
-				history.pushState({}, '', this.newTab.attr('href'));
-			}
 
 			this.toggleItem(this.newTab, true, 'tab');
 			this.toggleItem(this.newPane, true, 'pane');
 
-			if ( !isAlreadyActive ) {
-				this.options.select.call(this.element, this.newTab, this.newPane);
-				this.current = index;
-			}
+			this.triggerAction(index);
 		}
 
 	});
@@ -493,24 +511,24 @@
 		select: function ( index ) {
 			Accordion._super.select.apply(this, arguments);
 
-			this.activeTab = this.dom.tab.filter('.' + this.options.classes.isActive);
-			this.activePane = this.dom.pane.filter('.' + this.options.classes.isActive);
-
-			var isAlreadyActive   = isAlreadyActiveState.call(this, this.newTab, this.newPane);
+			var isAlreadyActive   = this.isAlreadyActive;
 			var multiSelectMethod = this.options.multiSelect ? 'not' : 'filter';
 
 			this.toggleItem(this.dom.tab[multiSelectMethod](this.activeTab), false, 'tab');
 			this.toggleItem(this.dom.pane[multiSelectMethod](this.activePane), false, 'pane');
 
-			if ( this.options.changeURL && this.newTab.is('a') && hasPushState ) {
-				history.pushState({}, '', isAlreadyActive ? '' : this.newTab.attr('href'));
-			}
-
 			this.toggleItem(this.newTab, !isAlreadyActive, 'tab');
 			this.toggleItem(this.newPane, !isAlreadyActive, 'pane');
 
-			this.options.select.call(this.element, this.newTab, this.newPane, !isAlreadyActive);
-			this.current = index;
+			this.triggerAction(index);
+		},
+
+		triggerAction: function () {
+			Accordion._super.triggerAction.apply(this, arguments);
+
+			if ( this.isAlreadyActive ) {
+				this.options.deselect.call(this.element, this.newTab, this.newPane);
+			}
 		}
 
 	});

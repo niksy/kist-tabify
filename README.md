@@ -64,9 +64,16 @@ If tab toggler elements are anchor elements, determines if URL should be update 
 ###### select
 
 Type: `Function`  
-Arguments: [Tab], [Pane], [Is element opened]
+Arguments: [Tab], [Pane]
 
 Callback to run on tab selection.
+
+###### deselect
+
+Type: `Function`  
+Arguments: [Tab], [Pane]
+
+Callback to run on tab deselection.
 
 ###### create
 
@@ -148,6 +155,9 @@ $('.Tab').tabify({
 	namespace: 'Foobar',
 	select: function ( tab, pane ) {
 		// Do something on select.
+	},
+	deselect: function ( tab, pane ) {
+		// Do something on deselect.
 	},
 	create: function () {
 		// Do something on create.
