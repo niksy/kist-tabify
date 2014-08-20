@@ -13,6 +13,7 @@
 		<button type="button" class="second-id">Move to second item via ID</button><br />
 		<button type="button" class="third-id">Move to third item via ID</button><br />
 		<button type="button" class="first-id">Move to first item via ID</button><br />
+		<button type="button" class="third-id-01">Move to third item via ID</button><br />
 	</div>
 
 	<div class="Tab">
@@ -48,6 +49,10 @@
 
 		$('.first-id').on('click', function () {
 			$('.Tab').tabify('move', 'tab1');
+		});
+
+		$('.third-id-01').on('click', function () {
+			$('.Tab').tabify('move', '#tab3');
 		});
 
 		$('.Tab').tabify();
