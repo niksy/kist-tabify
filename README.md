@@ -14,7 +14,7 @@ bower install niksy/kist-tabify
 
 Returns: `jQuery`
 
-Element is container for tabs and corresponding panes.
+Element is container for tabs and corresponding panes. If panes can’t be found inside element, plugin will search for them outside container, beginning with `body` element.
 
 #### options
 

@@ -45,6 +45,9 @@
 	plugin.publicMethods = ['destroy','prev','next','move'];
 
 	var dom = {
+		common: {
+			body: $('body')
+		},
 		setup: function () {
 
 			var generateAriaTab  = generateAriaAttrs.call(this, 'tab');
@@ -52,8 +55,9 @@
 
 			this.dom      = this.dom || {};
 			this.dom.el   = $(this.element);
-			this.dom.tab = this.dom.el.find(this.options.tab);
+			this.dom.tab  = this.dom.el.find(this.options.tab);
 			this.dom.pane = this.dom.el.find(this.options.pane);
+			this.dom.pane = this.dom.pane.length ? this.dom.pane : dom.common.body.find(this.options.pane);
 
 			this.dom.el
 				.addClass(this.options.classes.wrapper);
