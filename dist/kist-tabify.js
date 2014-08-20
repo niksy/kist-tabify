@@ -1,4 +1,4 @@
-/*! kist-tabify 0.1.3 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-tabify 0.1.4 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -47,12 +47,14 @@
 
 	var dom = {
 		common: {
-			body: $('body')
+			body: null
 		},
 		setup: function () {
 
 			var generateAriaTab  = generateAriaAttrs.call(this, 'tab');
 			var generateAriaPane = generateAriaAttrs.call(this, 'pane');
+
+			dom.common.body = dom.common.body || $('body');
 
 			this.dom      = this.dom || {};
 			this.dom.el   = $(this.element);
