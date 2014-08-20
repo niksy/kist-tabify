@@ -1,4 +1,4 @@
-/*! kist-tabify 0.1.2 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-tabify 0.1.3 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -171,7 +171,7 @@
 	 */
 	function generateAriaIds ( options ) {
 		if ( options.href && options.ns === '-pane' ) {
-			options.id = options.href.replace(/^#/, '');
+			options.id = constructId(options.href);
 		}
 		return options.id ? options.id : plugin.ns.css + options.ns + '-' + options.instanceId + '-' + options.index;
 	}
@@ -290,6 +290,15 @@
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param  {String} id
+	 *
+	 * @return {String}
+	 */
+	function constructId ( id ) {
+		return id.replace(/^#/, '');
 	}
 
 	/**
@@ -419,6 +428,8 @@
 			}
 
 			if ( typeof(placement) === 'string' ) {
+
+				placement = constructId(placement);
 
 				tab = this.dom.tab.filter($.proxy(filterTab, null, placement));
 				pane = this.dom.pane.filter($.proxy(filterPane, null, placement));
