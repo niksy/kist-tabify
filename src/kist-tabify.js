@@ -46,12 +46,14 @@
 
 	var dom = {
 		common: {
-			body: $('body')
+			body: null
 		},
 		setup: function () {
 
 			var generateAriaTab  = generateAriaAttrs.call(this, 'tab');
 			var generateAriaPane = generateAriaAttrs.call(this, 'pane');
+
+			dom.common.body = dom.common.body || $('body');
 
 			this.dom      = this.dom || {};
 			this.dom.el   = $(this.element);
