@@ -169,10 +169,18 @@
 	 * @return {String}
 	 */
 	function generateAriaIds ( options ) {
-		if ( options.href && options.ns === '-pane' ) {
-			options.id = constructId(options.href);
+
+		var el = options.self.dom;
+
+		if ( options.type === 'tab' && options.ns === '-pane' ) {
+			options.id = el.pane.eq(el.tab.index(options.el)).attr('id');
 		}
-		return options.id ? options.id : plugin.ns.css + options.ns + '-' + options.instanceId + '-' + options.index;
+
+		if ( options.type === 'pane' && options.ns === '-tab' ) {
+			options.id = el.tab.eq(el.pane.index(options.el)).attr('id');
+		}
+
+		return options.id ? options.id : plugin.ns.css + options.ns + '-' + options.self.instance.id + '-' + options.index;
 	}
 
 	/**
@@ -184,13 +192,13 @@
 	 */
 	function generateAriaAttrs ( type ) {
 
-		var instanceId = this.instance.id;
+		var self = this;
 		var ariaAttr;
 
 		if ( type === 'tab' ) {
 			ariaAttr = ['aria-controls','pane'];
 		} else {
-			ariaAttr = ['aria-labelledby', 'tab'];
+			ariaAttr = ['aria-labelledby','tab'];
 		}
 
 		/**
@@ -207,10 +215,12 @@
 			var id = el.attr('id');
 			var href = el.attr('href');
 			var options = {
+				el: el,
 				id: id,
 				href: href,
-				instanceId: instanceId,
-				index: index
+				self: self,
+				index: index,
+				type: type
 			};
 			var elId;
 			var ariaId;
