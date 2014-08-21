@@ -1,4 +1,4 @@
-/*! kist-tabify 0.1.4 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-tabify 0.1.5 - Simple tabs and accordion interface. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -104,8 +104,6 @@
 				}
 			}
 
-			this.options.create.call(this.element);
-
 		},
 		destroy: function () {
 
@@ -172,10 +170,18 @@
 	 * @return {String}
 	 */
 	function generateAriaIds ( options ) {
-		if ( options.href && options.ns === '-pane' ) {
-			options.id = constructId(options.href);
+
+		var el = options.self.dom;
+
+		if ( options.type === 'tab' && options.ns === '-pane' ) {
+			options.id = el.pane.eq(el.tab.index(options.el)).attr('id');
 		}
-		return options.id ? options.id : plugin.ns.css + options.ns + '-' + options.instanceId + '-' + options.index;
+
+		if ( options.type === 'pane' && options.ns === '-tab' ) {
+			options.id = el.tab.eq(el.pane.index(options.el)).attr('id');
+		}
+
+		return options.id ? options.id : plugin.ns.css + options.ns + '-' + options.self.instance.id + '-' + options.index;
 	}
 
 	/**
@@ -187,13 +193,13 @@
 	 */
 	function generateAriaAttrs ( type ) {
 
-		var instanceId = this.instance.id;
+		var self = this;
 		var ariaAttr;
 
 		if ( type === 'tab' ) {
 			ariaAttr = ['aria-controls','pane'];
 		} else {
-			ariaAttr = ['aria-labelledby', 'tab'];
+			ariaAttr = ['aria-labelledby','tab'];
 		}
 
 		/**
@@ -210,10 +216,12 @@
 			var id = el.attr('id');
 			var href = el.attr('href');
 			var options = {
+				el: el,
 				id: id,
 				href: href,
-				instanceId: instanceId,
-				index: index
+				self: self,
+				index: index,
+				type: type
 			};
 			var elId;
 			var ariaId;
@@ -326,6 +334,7 @@
 		}
 
 		this.move(this.options.initial);
+		this.setupDone = true;
 
 	}
 
@@ -384,7 +393,7 @@
 
 			this.isAlreadyActive = isAlreadyActiveState.call(this, this.newTab, this.newPane);
 
-			if ( this.options.changeURL && this.newTab.is('a') && hasPushState ) {
+			if ( this.options.changeURL && this.newTab.is('a') && hasPushState && this.setupDone ) {
 				history.pushState({}, '', this.newTab.attr('href'));
 			}
 
@@ -396,6 +405,11 @@
 		 * @return {}
 		 */
 		triggerAction: function ( index ) {
+
+			if ( !this.setupDone ) {
+				this.options.create.call(this.element, this.newTab, this.newPane);
+				return;
+			}
 
 			if ( !this.isAlreadyActive ) {
 				if ( (this.activeTab.length || this.activePane.length) && !isAlreadyActiveState.call(this, this.activeTab, this.activePane) ) {
@@ -425,6 +439,10 @@
 			var tab;
 			var pane;
 
+			if ( typeof(placement) === 'function' ) {
+				placement = placement.call(this.element);
+			}
+
 			if ( typeof(placement) === 'number' ) {
 				this.select(placement-1);
 			}
@@ -453,6 +471,7 @@
 		},
 
 		current: null,
+		setupDone: false,
 
 		defaults: {
 			type: 'tab',
@@ -543,6 +562,10 @@
 
 		triggerAction: function () {
 			Accordion._super.triggerAction.apply(this, arguments);
+
+			if ( !this.setupDone ) {
+				return;
+			}
 
 			if ( this.isAlreadyActive ) {
 				this.options.deselect.call(this.element, this.newTab, this.newPane);
