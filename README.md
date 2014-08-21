@@ -111,13 +111,16 @@ Move to tab element determined by second argument. Second argument accepts value
 
 #### placement
 
-Type: `Integer|String`  
+Type: `Integer|String|Function`  
 Default: `1`
 
 Initial element to select.
 
-If defined as integer, it’s a non-zero-index based position of tab element to activate.  
-If defined as string, it’s value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate.
+If defined as:
+
+* Integer, it’s a non-zero-index based position of tab element to activate.  
+* String, it’s value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate.
+* Function, it should return either index or string which correspond to integer and string values for this property
 
 ## Examples
 
@@ -150,6 +153,8 @@ Setup tab instance.
 $('.Tab').tabify({
 	type: 'tab',
 	initial: 1,
+	// initial: 'foo',
+	// initial: function () { return 1; }
 	tab: '.tab',
 	pane: '.pane',
 	namespace: 'Foobar',
@@ -176,7 +181,7 @@ Move to arbitrary tab.
 
 ```js
 $('.Tab').tabify('move', 1);
-$('.Tab').tabify('move', 'tabName');
+$('.Tab').tabify('move', 'foo');
 ```
 
 Destroy plugin instance.

@@ -424,6 +424,10 @@
 			var tab;
 			var pane;
 
+			if ( typeof(placement) === 'function' ) {
+				placement = placement.call(this.element);
+			}
+
 			if ( typeof(placement) === 'number' ) {
 				this.select(placement-1);
 			}

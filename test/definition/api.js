@@ -1,6 +1,10 @@
 // Tabs
 $('.container').tabify({
 	initial: 1,
+	initial: 'foo',
+	initial: function () {
+		return 1;
+	},
 	tab: '.tab',
 	pane: '.pane',
 	namespace: 'Foo',
@@ -27,7 +31,7 @@ $('.container').tabify({
 	deselect: function ( tab, pane ) {
 
 	},
-	create: function () {
+	create: function ( tab, pane ) {
 
 	}
 });
