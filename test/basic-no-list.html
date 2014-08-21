@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Basic, no list</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<link rel="stylesheet" href="assets/style/style.css" />
+</head>
+<body>
+
+	<ul>
+		<li>
+			<div class="Tab">
+				<a href="#tab1" class="Tab-toggler">Tab 1</a>
+				<a href="#tab2" class="Tab-toggler">Tab 2</a>
+				<a href="#tab3" class="Tab-toggler">Tab 3</a>
+				<div class="Tab-panes">
+					<div class="Tab-pane Tab-pane--1" id="tab1">
+						<p>Pane 1</p>
+					</div>
+					<div class="Tab-pane Tab-pane--2" id="tab2">
+						<p>Pane 2</p>
+					</div>
+					<div class="Tab-pane Tab-pane--3" id="tab3">
+						<p>Pane 3</p>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../src/kist-tabify.js"></script>
+	<script>
+
+		$('.Tab').tabify({
+			tab: '.Tab-toggler',
+			pane: '.Tab-pane'
+		});
+
+	</script>
+</body>
+</html>

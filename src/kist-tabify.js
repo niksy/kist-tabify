@@ -61,6 +61,11 @@
 			this.dom.pane = this.dom.el.find(this.options.pane);
 			this.dom.pane = this.dom.pane.length ? this.dom.pane : dom.common.body.find(this.options.pane);
 
+			this.dom.tabItem = this.dom.tab.closest('li');
+			this.dom.tabItem = this.dom.el.find(this.dom.tabItem).length ? this.dom.tabItem : $();
+			this.dom.tabList = this.dom.tab.closest('ul');
+			this.dom.tabList = this.dom.el.find(this.dom.tabList).length ? this.dom.tabList : $();
+
 			this.dom.el
 				.addClass(this.options.classes.wrapper);
 
@@ -70,15 +75,6 @@
 					'role': 'tab',
 					'aria-selected': false
 				})
-				.closest('li')
-					.attr({
-						'role': 'presentation'
-					})
-				.closest('ul')
-					.attr({
-						'role': 'tablist'
-					})
-				.end().end()
 				.each(generateAriaTab);
 
 			this.dom.pane
@@ -88,6 +84,16 @@
 					'aria-hidden': true
 				})
 				.each(generateAriaPane);
+
+			this.dom.tabItem
+				.attr({
+					'role': 'presentation'
+				});
+
+			this.dom.tabList
+				.attr({
+					'role': 'tablist'
+				});
 
 			if ( this.options.type === 'accordion' ) {
 				this.dom.pane
@@ -112,15 +118,14 @@
 
 			this.dom.tab
 				.removeClass(this.options.classes.tab)
-				.removeAttr('role aria-selected aria-controls')
-				.closest('li')
-					.removeAttr('role')
-				.closest('ul')
-					.removeAttr('role');
+				.removeAttr('role aria-selected aria-controls');
 
 			this.dom.pane
 				.removeClass(this.options.classes.pane)
 				.removeAttr('role aria-hidden aria-labelledby aria-expanded');
+
+			this.dom.tabItem.add(this.dom.tabList)
+				.removeAttr('role');
 
 			this.dom.tab.add(this.dom.pane)
 				.each(function ( index, element ) {
