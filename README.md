@@ -78,7 +78,7 @@ Callback to run on tab deselection.
 ###### create
 
 Type: `Function`  
-Arguments: []
+Arguments: [Tab], [Pane]
 
 Callback to run on tab instance creation.
 
@@ -164,7 +164,7 @@ $('.Tab').tabify({
 	deselect: function ( tab, pane ) {
 		// Do something on deselect.
 	},
-	create: function () {
+	create: function ( tab, pane ) {
 		// Do something on create.
 	}
 });

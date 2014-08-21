@@ -103,8 +103,6 @@
 				}
 			}
 
-			this.options.create.call(this.element);
-
 		},
 		destroy: function () {
 
@@ -325,6 +323,7 @@
 		}
 
 		this.move(this.options.initial);
+		this.setupDone = true;
 
 	}
 
@@ -383,7 +382,7 @@
 
 			this.isAlreadyActive = isAlreadyActiveState.call(this, this.newTab, this.newPane);
 
-			if ( this.options.changeURL && this.newTab.is('a') && hasPushState ) {
+			if ( this.options.changeURL && this.newTab.is('a') && hasPushState && this.setupDone ) {
 				history.pushState({}, '', this.newTab.attr('href'));
 			}
 
@@ -395,6 +394,11 @@
 		 * @return {}
 		 */
 		triggerAction: function ( index ) {
+
+			if ( !this.setupDone ) {
+				this.options.create.call(this.element, this.newTab, this.newPane);
+				return;
+			}
 
 			if ( !this.isAlreadyActive ) {
 				if ( (this.activeTab.length || this.activePane.length) && !isAlreadyActiveState.call(this, this.activeTab, this.activePane) ) {
@@ -456,6 +460,7 @@
 		},
 
 		current: null,
+		setupDone: false,
 
 		defaults: {
 			type: 'tab',
@@ -546,6 +551,10 @@
 
 		triggerAction: function () {
 			Accordion._super.triggerAction.apply(this, arguments);
+
+			if ( !this.setupDone ) {
+				return;
+			}
 
 			if ( this.isAlreadyActive ) {
 				this.options.deselect.call(this.element, this.newTab, this.newPane);

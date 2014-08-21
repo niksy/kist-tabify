@@ -14,7 +14,7 @@ $('.container').tabify({
 	deselect: function ( tab, pane ) {
 
 	},
-	create: function () {
+	create: function ( tab, pane ) {
 
 	}
 });

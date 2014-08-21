@@ -36,15 +36,18 @@
 			type: 'accordion',
 			select: function ( tab, pane ) {
 				console.info('Select');
+				console.info(this);
 				console.info(arguments);
 			},
 			deselect: function ( tab, pane ) {
 				console.info('Deselect');
+				console.info(this);
 				console.info(arguments);
 			},
-			create: function () {
+			create: function ( tab, pane ) {
 				console.log('Created!');
 				console.log(this);
+				console.log(arguments);
 			}
 		});
 
