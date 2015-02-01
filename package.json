@@ -2,31 +2,55 @@
   "name": "kist-tabify",
   "version": "0.1.6",
   "description": "Simple tabs and accordion interface.",
-  "author": "Ivan Nikolić",
+  "author": "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)",
   "license": "MIT",
-  "main": "Gruntfile.js",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.4.0",
-    "grunt-bump": "^0.0.13",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.4.1",
-    "grunt-jscs": "^0.6.2"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "jquery": "^1.11.2",
+    "kist-toolbox": "^0.3.5",
+    "kist-klass": "^0.1.5"
+  },
+  "devDependencies": {
+    "browserify-shim": "^3.8.0",
+    "bundle-collapser": "^1.1.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.2.0",
+    "grunt-bump": "^0.0.13",
+    "grunt-compile-handlebars": "^1.0.0",
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-connect": "^0.9.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-jscs": "^1.1.0",
+    "load-grunt-tasks": "^0.6.0"
+  },
+  "keywords": [
+    "kist",
+    "tabs",
+    "accordion",
+    "browserify"
+  ],
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "jquery": "global:$"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/niksy/kist-tabify.git"
+    "url": "https://github.com/niksy/kist-tabify.git"
   },
-  "keywords": [
-    "tabs",
-    "accordion"
-  ],
   "bugs": {
     "url": "https://github.com/niksy/kist-tabify/issues"
   },

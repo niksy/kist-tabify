@@ -3,10 +3,10 @@
   "version": "0.1.6",
   "description": "Simple tabs and accordion interface.",
   "authors": [
-    "Ivan Nikolić"
+    "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)"
   ],
   "license": "MIT",
-  "main": "dist/kist-tabify.min.js",
+  "main": "dist/kist-tabify.js",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -14,18 +14,25 @@
     "test",
     "tests",
     "src",
+    "lib",
     "Gruntfile.js",
     "package.json"
   ],
   "dependencies": {
-    "jquery": ">=1"
+    "jquery": "~1.11.2"
   },
   "devDependencies": {
     "jquery": "1"
   },
   "homepage": "https://github.com/niksy/kist-tabify",
   "keywords": [
+    "kist",
     "tabs",
-    "accordion"
+    "accordion",
+    "browserify"
+  ],
+  "moduleType": [
+    "amd",
+    "globals"
   ]
 }

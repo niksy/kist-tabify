@@ -5,12 +5,14 @@ Simple tabs and accordion interface.
 ## Installation
 
 ```sh
-bower install niksy/kist-tabify
+npm install kist-tabify --save
+
+bower install kist-tabify --save
 ```
 
 ## API
 
-### `Element.tabify([options], [placement])`
+### `$Element.tabify([options], [placement])`
 
 Returns: `jQuery`
 
@@ -65,6 +67,7 @@ If tab toggler elements are anchor elements, determines if URL should be update 
 
 Type: `Function`  
 Arguments: [Tab], [Pane]
+Event: `tabifyselect`
 
 Callback to run on tab selection.
 
@@ -72,6 +75,7 @@ Callback to run on tab selection.
 
 Type: `Function`  
 Arguments: [Tab], [Pane]
+Event: `tabifydeselect`
 
 Callback to run on tab deselection.
 
@@ -79,15 +83,9 @@ Callback to run on tab deselection.
 
 Type: `Function`  
 Arguments: [Tab], [Pane]
+Event: `tabifycreate`
 
 Callback to run on tab instance creation.
-
-###### namespace
-
-Type: `String`  
-Default: `kist-Tabify`
-
-Default HTML class namespace.
 
 ##### Options defined as `String`
 
@@ -120,7 +118,7 @@ If defined as:
 
 * Integer, it’s a non-zero-index based position of tab element to activate.  
 * String, it’s value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate.
-* Function, it should return either index or string which correspond to integer and string values for this property
+* Function, it should return either index or string which correspond to integer and string values for this property.
 
 ## Examples
 
@@ -134,13 +132,13 @@ Default structure for tab interface.
 		<li class="Tab-item"><a href="#tab3" class="Tab-toggler">Tab 3</a></li>
 	</ul>
 	<div class="Tab-panes">
-		<div class="Tab-pane Tab-pane--1">
+		<div class="Tab-pane Tab-pane--1" id="tab1">
 			<p>Pane 1</p>
 		</div>
-		<div class="Tab-pane Tab-pane--2">
+		<div class="Tab-pane Tab-pane--2" id="tab2">
 			<p>Pane 2</p>
 		</div>
-		<div class="Tab-pane Tab-pane--3">
+		<div class="Tab-pane Tab-pane--3" id="tab3">
 			<p>Pane 3</p>
 		</div>
 	</div>

@@ -1,13 +1,4 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Events</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-	<link rel="stylesheet" href="assets/style/style.css" />
-</head>
-<body>
+{{> top title="Accordion, multi select, events"}}
 
 	<div class="Tab">
 		<ul class="Tab-items">
@@ -28,28 +19,25 @@
 		</div>
 	</div>
 
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="../src/kist-tabify.js"></script>
 	<script>
 
 		$('.Tab').tabify({
+			type: 'accordion',
+			multiSelect: true,
 			select: function ( tab, pane ) {
 				console.info('Select');
-				console.info(this);
 				console.info(arguments);
 			},
 			deselect: function ( tab, pane ) {
 				console.info('Deselect');
-				console.info(this);
 				console.info(arguments);
 			},
-			create: function ( tab, pane ) {
+			create: function () {
 				console.log('Created!');
 				console.log(this);
-				console.log(arguments);
 			}
 		});
 
 	</script>
-</body>
-</html>
+
+{{> bottom}}

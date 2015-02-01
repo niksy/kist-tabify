@@ -1,13 +1,4 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Accordion, multi select</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-	<link rel="stylesheet" href="assets/style/style.css" />
-</head>
-<body>
+{{> top title="Namespace"}}
 
 	<div class="Tab">
 		<ul class="Tab-items">
@@ -28,15 +19,12 @@
 		</div>
 	</div>
 
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="../src/kist-tabify.js"></script>
 	<script>
 
 		$('.Tab').tabify({
-			type: 'accordion',
-			multiSelect: true
+			classes: $.fn.tabify.appendNamespacedClasses('Foobar')
 		});
 
 	</script>
-</body>
-</html>
+
+{{> bottom}}
