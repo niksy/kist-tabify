@@ -1,6 +1,8 @@
-/*! kist-tabify 0.1.6 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.STANDALONE=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*! kist-tabify 0.2.0 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self);var n=f;n=n.jQuery||(n.jQuery={}),n=n.fn||(n.fn={}),n.tabify=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Tabify = require(3);
+var meta = require(10);
+var emit = require(16)(meta.name);
 
 var Accordion = module.exports = Tabify.extend({
 
@@ -22,11 +24,11 @@ var Accordion = module.exports = Tabify.extend({
 		var isAlreadyActive   = this.isAlreadyActive;
 		var multiSelectMethod = this.options.multiSelect ? 'not' : 'filter';
 
-		this.toggleItem(this.$tab[multiSelectMethod](this.activeTab), false, 'tab');
-		this.toggleItem(this.$pane[multiSelectMethod](this.activePane), false, 'pane');
+		this.toggleItem(this.$tab[multiSelectMethod](this.$activeTab), false, 'tab');
+		this.toggleItem(this.$pane[multiSelectMethod](this.$activePane), false, 'pane');
 
-		this.toggleItem(this.newTab, !isAlreadyActive, 'tab');
-		this.toggleItem(this.newPane, !isAlreadyActive, 'pane');
+		this.toggleItem(this.$newTab, !isAlreadyActive, 'tab');
+		this.toggleItem(this.$newPane, !isAlreadyActive, 'pane');
 
 		this.triggerAction(index);
 	},
@@ -39,7 +41,7 @@ var Accordion = module.exports = Tabify.extend({
 		}
 
 		if ( this.isAlreadyActive ) {
-			this.options.deselect.call(this.element, this.newTab, this.newPane);
+			emit(this, 'deselect', [this.$newTab, this.$newPane]);
 		}
 	}
 
@@ -48,8 +50,8 @@ var Accordion = module.exports = Tabify.extend({
 },{}],2:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
-var htmlClasses = require(6);
+var meta = require(10);
+var htmlClasses = require(7);
 
 /**
  * @param  {Object} options
@@ -68,7 +70,7 @@ function generateIds ( options ) {
 		options.id = self.$tab.eq(self.$pane.index(options.el)).attr('id');
 	}
 
-	return options.id ? options.id : meta.ns.htmlClass + options.ns + '-' + self.uid + '-' + options.index;
+	return options.id ? options.id : options.ns + '-' + self.uid + '-' + options.index;
 }
 
 /**
@@ -95,14 +97,12 @@ AriaGenerator.prototype.generateAttrs = function ( type ) {
 	}
 
 	/**
-	 * @this {Tabify#dom.[tab|pane]}
-	 *
 	 * @param  {Integer} index
 	 * @param  {Element} element
 	 */
 	return function ( index, element ) {
 
-		var el = $(this);
+		var el = $(element);
 		var id = el.attr('id');
 		var href = el.attr('href');
 		var options = {
@@ -116,7 +116,7 @@ AriaGenerator.prototype.generateAttrs = function ( type ) {
 		var elId;
 		var ariaId;
 
-		elId   = generateIds($.extend({}, options, {
+		elId = generateIds($.extend({}, options, {
 			ns: htmlClasses[type]
 		}));
 		ariaId = generateIds($.extend({}, options, {
@@ -133,12 +133,14 @@ AriaGenerator.prototype.generateAttrs = function ( type ) {
 },{}],3:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var Klass = require(11);
-var meta = require(9);
+var Klass = require(12);
+var meta = require(10);
 var dom = require(4);
 var events = require(5);
-var instance = require(8);
-var htmlClasses = require(6);
+var instance = require(9);
+var htmlClasses = require(7);
+var getClassSelector = require(6);
+var emit = require(16)(meta.name);
 
 var hasPushState = (('Modernizr' in window) && window.Modernizr.history);
 
@@ -273,16 +275,16 @@ var Tabify = module.exports = Klass.extend({
 	 */
 	select: function ( index ) {
 
-		this.activeTab = this.$tab.filter('.' + this.options.classes.isActive);
-		this.activePane = this.$pane.filter('.' + this.options.classes.isActive);
+		this.$activeTab = this.$tab.filter(getClassSelector(this.options.classes.isActive));
+		this.$activePane = this.$pane.filter(getClassSelector(this.options.classes.isActive));
 
-		this.newTab  = this.$tab.eq(index);
-		this.newPane = this.$pane.eq(index);
+		this.$newTab  = this.$tab.eq(index);
+		this.$newPane = this.$pane.eq(index);
 
-		this.isAlreadyActive = this.isAlreadyActiveState(this.newTab, this.newPane);
+		this.isAlreadyActive = this.isAlreadyActiveState(this.$newTab, this.$newPane);
 
-		if ( this.options.changeURL && this.newTab.is('a') && hasPushState && this.setupDone ) {
-			history.pushState({}, '', this.newTab.attr('href'));
+		if ( this.options.changeURL && this.$newTab.is('a') && hasPushState && this.setupDone ) {
+			history.pushState({}, '', this.$newTab.attr('href'));
 		}
 
 	},
@@ -293,15 +295,16 @@ var Tabify = module.exports = Klass.extend({
 	triggerAction: function ( index ) {
 
 		if ( !this.setupDone ) {
-			this.options.create.call(this.element, this.newTab, this.newPane);
+			emit(this, 'create', [this.$newTab, this.$newPane]);
+			this.current = index;
 			return;
 		}
 
 		if ( !this.isAlreadyActive ) {
-			if ( (this.activeTab.length || this.activePane.length) && !this.isAlreadyActiveState(this.activeTab, this.activePane) ) {
-				this.options.deselect.call(this.element, this.activeTab, this.activePane);
+			if ( (this.$activeTab.length || this.$activePane.length) && !this.isAlreadyActiveState(this.$activeTab, this.$activePane) ) {
+				emit(this, 'deselect', [this.$activeTab, this.$activePane]);
 			}
-			this.options.select.call(this.element, this.newTab, this.newPane);
+			emit(this, 'select', [this.$newTab, this.$newPane]);
 			this.current = index;
 		}
 
@@ -379,8 +382,8 @@ var Tabify = module.exports = Klass.extend({
 // jscs:disable disallowQuotedKeysInObjects
 
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
-var htmlClasses = require(6);
+var meta = require(10);
+var htmlClasses = require(7);
 var AriaGenerator = require(2);
 
 var dom = module.exports = {
@@ -433,6 +436,7 @@ var dom = module.exports = {
 			});
 
 		if ( this.options.type === 'accordion' ) {
+
 			this.$pane
 				.attr({
 					'aria-expanded': false
@@ -444,6 +448,7 @@ var dom = module.exports = {
 						'aria-multiselectable': true
 					});
 			}
+
 		}
 
 	},
@@ -479,11 +484,12 @@ var dom = module.exports = {
 },{}],5:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+var getClassSelector = require(6);
 
 module.exports = {
 	setup: function () {
 
-		this.$el.on('click' + this.ens, ('.' + this.options.classes.tab.split(' ').join('.')), $.proxy(function ( e ) {
+		this.$el.on('click' + this.ens, getClassSelector(this.options.classes.tab), $.proxy(function ( e ) {
 
 			e.preventDefault();
 			this.select(this.$tab.index($(e.currentTarget)));
@@ -498,7 +504,17 @@ module.exports = {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
-var meta = require(9);
+/**
+ * @param  {String} className
+ *
+ * @return {String}
+ */
+module.exports = function ( className ) {
+	return '.' + className.split(' ').join('.');
+};
+
+},{}],7:[function(require,module,exports){
+var meta = require(10);
 var htmlClass = meta.ns.htmlClass;
 
 module.exports = {
@@ -508,16 +524,16 @@ module.exports = {
 	isActive: 'is-active'
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var Ctor = require(3);
-var Tabs = require(10);
+var Tabs = require(11);
 var Accordion = require(1);
-var meta = require(9);
-var isPublicMethod = require(15)(meta.publicMethods);
-var appendClass = require(13)(Ctor.prototype.defaults.classes);
-var appendNamespacedClasses = require(14)(Ctor.prototype.defaults.classes, meta.ns.htmlClass);
+var meta = require(10);
+var isPublicMethod = require(17)(meta.publicMethods);
+var appendClass = require(14)(Ctor.prototype.defaults.classes);
+var appendNamespacedClasses = require(15)(Ctor.prototype.defaults.classes, meta.ns.htmlClass);
 
 /**
  * @param  {Object|String} options
@@ -548,10 +564,10 @@ plugin.appendClass = appendClass;
 plugin.appendNamespacedClasses = appendNamespacedClasses;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
+var meta = require(10);
 var instance = 0;
 
 module.exports = {
@@ -565,7 +581,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
 	name: 'tabify',
 	ns: {
@@ -575,7 +591,7 @@ module.exports = {
 	publicMethods: ['destroy','prev','next','move']
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var Tabify = require(3);
 
 var Tabs = module.exports = Tabify.extend({
@@ -586,16 +602,16 @@ var Tabs = module.exports = Tabify.extend({
 		this.toggleItem(this.$tab, false, 'tab');
 		this.toggleItem(this.$pane, false, 'pane');
 
-		this.toggleItem(this.newTab, true, 'tab');
-		this.toggleItem(this.newPane, true, 'pane');
+		this.toggleItem(this.$newTab, true, 'tab');
+		this.toggleItem(this.$newPane, true, 'pane');
 
 		this.triggerAction(index);
 	}
 
 });
 
-},{}],11:[function(require,module,exports){
-var objExtend = require(12);
+},{}],12:[function(require,module,exports){
+var objExtend = require(13);
 
 /**
  * @param  {Object} protoProps
@@ -635,7 +651,7 @@ function extend ( protoProps, staticProps ) {
 var Klass = module.exports = function () {};
 Klass.extend = extend;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = extend
 
 function extend(target) {
@@ -652,7 +668,7 @@ function extend(target) {
     return target
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 
@@ -675,7 +691,7 @@ module.exports = function ( classes ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 
@@ -702,7 +718,37 @@ module.exports = function ( classes, defaultNs ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+(function (global){
+/* jshint maxparams:false */
+
+var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+
+/**
+ * @param  {String} name
+ *
+ * @return {Function}
+ */
+module.exports = function ( name ) {
+
+	/**
+	 * @param  {Object}   ctx
+	 * @param  {String}   eventName
+	 * @param  {Array}    data
+	 * @param  {jQuery}   triggerEl
+	 */
+	return function ( ctx, eventName, data, triggerEl ) {
+		var el = (ctx.dom && ctx.dom.el) || ctx.$el || $({});
+		if ( ctx.options[eventName] ) {
+			ctx.options[eventName].apply((el.length === 1 ? el[0] : el.toArray()), data);
+		}
+		(triggerEl || el).trigger(((name || '') + eventName).toLowerCase(), data);
+	};
+
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],17:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 
@@ -725,5 +771,5 @@ module.exports = function ( methods ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[7])(7)
+},{}]},{},[8])(8)
 });
