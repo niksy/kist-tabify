@@ -1,9 +1,9 @@
 // Tabs
 $('.container').tabify({
-	initial: 1,
+	initial: 0,
 	initial: 'foo',
 	initial: function () {
-		return 1;
+		return 0;
 	},
 	tab: '.tab',
 	pane: '.pane',
@@ -44,5 +44,5 @@ $('.container').tabify('prev');
 $('.container').tabify('next');
 
 // Move
-$('.container').tabify('move', 1);
+$('.container').tabify('move', 0);
 $('.container').tabify('move', 'tabName');

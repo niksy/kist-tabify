@@ -116,7 +116,7 @@ Initial element to select.
 
 If defined as:
 
-* Integer, it’s a non-zero-index based position of tab element to activate.  
+* Integer, it’s index of tab element to activate.
 * String, it’s value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate.
 * Function, it should return either index or string which correspond to integer and string values for this property.
 
