@@ -109,16 +109,19 @@ Move to tab element determined by second argument. Second argument accepts value
 
 #### placement
 
-Type: `Integer|String|Function`  
+Type: `Integer|String|Function|Boolean`  
 Default: `1`
 
 Initial element to select.
 
 If defined as:
 
-* Integer, it’s index of tab element to activate.
-* String, it’s value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate.
-* Function, it should return either index or string which correspond to integer and string values for this property.
+| Type | Description |
+| --- | --- |
+| `Integer` | Index of tab element to activate. |
+| `String` | Value of `id` attribute, `data-tab-id` attribute or `href` attribute value of tab element to activate. |
+| `Function` | Should return either index or string which correspond to integer and string values for this property. |
+| `Boolean` | If true, it will active first tab element, else it won’t activate anything. |
 
 ## Examples
 
