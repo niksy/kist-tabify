@@ -1,4 +1,4 @@
-/*! kist-tabify 0.2.0 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
+/*! kist-tabify 0.2.1 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self);var n=f;n=n.jQuery||(n.jQuery={}),n=n.fn||(n.fn={}),n.tabify=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Tabify = require(3);
 var meta = require(10);
@@ -319,7 +319,7 @@ var Tabify = module.exports = Klass.extend({
 	},
 
 	/**
-	 * @param  {String} placement
+	 * @param  {Function|Number|String} placement
 	 */
 	move: function ( placement ) {
 
@@ -331,7 +331,7 @@ var Tabify = module.exports = Klass.extend({
 		}
 
 		if ( typeof(placement) === 'number' ) {
-			this.select(placement-1);
+			this.select(placement);
 		}
 
 		if ( typeof(placement) === 'string' ) {
@@ -349,6 +349,12 @@ var Tabify = module.exports = Klass.extend({
 
 		}
 
+		if ( typeof(placement) === 'boolean' ) {
+			if ( placement ) {
+				this.select(0);
+			}
+		}
+
 	},
 
 	destroy: function () {
@@ -362,7 +368,7 @@ var Tabify = module.exports = Klass.extend({
 
 	defaults: {
 		type: 'tab',
-		initial: 1,
+		initial: 0,
 		multiSelect: false,
 		tab: '> ul > li > a, > ul > li > button',
 		pane: '> div > div',
