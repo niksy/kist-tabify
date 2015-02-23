@@ -22,7 +22,12 @@
 	<script>
 
 		$('.Tab').tabify({
-			initial: false
+			initial: false,
+			create: function ( tab, pane ) {
+				console.info('Created!');
+				console.log(tab);
+				console.log(pane);
+			}
 		});
 
 	</script>
