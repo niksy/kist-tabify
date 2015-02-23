@@ -1,5 +1,5 @@
-/*! kist-tabify 0.2.1 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self);var n=f;n=n.jQuery||(n.jQuery={}),n=n.fn||(n.fn={}),n.tabify=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*! kist-tabify 0.2.2 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g=(g.jQuery||(g.jQuery = {}));g=(g.fn||(g.fn = {}));g.tabify = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Tabify = require(3);
 var meta = require(10);
 var emit = require(16)(meta.name);
@@ -47,7 +47,7 @@ var Accordion = module.exports = Tabify.extend({
 
 });
 
-},{}],2:[function(require,module,exports){
+},{"10":10,"16":16,"3":3}],2:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var meta = require(10);
@@ -130,7 +130,7 @@ AriaGenerator.prototype.generateAttrs = function ( type ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{"10":10,"7":7}],3:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var Klass = require(12);
@@ -352,6 +352,8 @@ var Tabify = module.exports = Klass.extend({
 		if ( typeof(placement) === 'boolean' ) {
 			if ( placement ) {
 				this.select(0);
+			} else {
+				emit(this, 'create', [$(), $()]);
 			}
 		}
 
@@ -382,7 +384,7 @@ var Tabify = module.exports = Klass.extend({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{"10":10,"12":12,"16":16,"4":4,"5":5,"6":6,"7":7,"9":9}],4:[function(require,module,exports){
 (function (global){
 // jscs:disable requireCapitalizedComments
 // jscs:disable disallowQuotedKeysInObjects
@@ -487,7 +489,7 @@ var dom = module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(require,module,exports){
+},{"10":10,"2":2,"7":7}],5:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var getClassSelector = require(6);
@@ -509,7 +511,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{"6":6}],6:[function(require,module,exports){
 /**
  * @param  {String} className
  *
@@ -530,7 +532,7 @@ module.exports = {
 	isActive: 'is-active'
 };
 
-},{}],8:[function(require,module,exports){
+},{"10":10}],8:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var Ctor = require(3);
@@ -570,7 +572,7 @@ plugin.appendClass = appendClass;
 plugin.appendNamespacedClasses = appendNamespacedClasses;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{"1":1,"10":10,"11":11,"14":14,"15":15,"17":17,"3":3}],9:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
 var meta = require(10);
@@ -587,7 +589,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{"10":10}],10:[function(require,module,exports){
 module.exports = {
 	name: 'tabify',
 	ns: {
@@ -616,7 +618,7 @@ var Tabs = module.exports = Tabify.extend({
 
 });
 
-},{}],12:[function(require,module,exports){
+},{"3":3}],12:[function(require,module,exports){
 var objExtend = require(13);
 
 /**
@@ -657,7 +659,7 @@ function extend ( protoProps, staticProps ) {
 var Klass = module.exports = function () {};
 Klass.extend = extend;
 
-},{}],13:[function(require,module,exports){
+},{"13":13}],13:[function(require,module,exports){
 module.exports = extend
 
 function extend(target) {
