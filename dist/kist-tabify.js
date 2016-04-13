@@ -1,8 +1,8 @@
-/*! kist-tabify 0.2.3 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
+/*! kist-tabify 0.3.0 - Simple tabs and accordion interface. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2016 | License: MIT */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g=(g.jQuery||(g.jQuery = {}));g=(g.fn||(g.fn = {}));g.tabify = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Tabify = require(3);
-var meta = require(10);
-var emit = require(16)(meta.name);
+var meta = require(12);
+var emit = require(5)(meta.name);
 
 var Accordion = module.exports = Tabify.extend({
 
@@ -47,11 +47,11 @@ var Accordion = module.exports = Tabify.extend({
 
 });
 
-},{"10":10,"16":16,"3":3}],2:[function(require,module,exports){
+},{"12":12,"3":3,"5":5}],2:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(10);
-var htmlClasses = require(7);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(12);
+var htmlClasses = require(8);
 
 /**
  * @param  {Object} options
@@ -130,17 +130,17 @@ AriaGenerator.prototype.generateAttrs = function ( type ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"10":10,"7":7}],3:[function(require,module,exports){
+},{"12":12,"8":8}],3:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var Klass = require(12);
-var meta = require(10);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var Klass = require(14);
+var meta = require(12);
 var dom = require(4);
-var events = require(5);
-var instance = require(9);
-var htmlClasses = require(7);
-var getClassSelector = require(6);
-var emit = require(16)(meta.name);
+var events = require(6);
+var instance = require(10);
+var htmlClasses = require(8);
+var getClassSelector = require(7);
+var emit = require(5)(meta.name);
 
 var hasPushState = (('Modernizr' in window) && window.Modernizr.history);
 
@@ -379,14 +379,14 @@ var Tabify = module.exports = Klass.extend({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"10":10,"12":12,"16":16,"4":4,"5":5,"6":6,"7":7,"9":9}],4:[function(require,module,exports){
+},{"10":10,"12":12,"14":14,"4":4,"5":5,"6":6,"7":7,"8":8}],4:[function(require,module,exports){
 (function (global){
 // jscs:disable requireCapitalizedComments
 // jscs:disable disallowQuotedKeysInObjects
 
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(10);
-var htmlClasses = require(7);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(12);
+var htmlClasses = require(8);
 var AriaGenerator = require(2);
 
 var dom = module.exports = {
@@ -484,10 +484,40 @@ var dom = module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"10":10,"2":2,"7":7}],5:[function(require,module,exports){
+},{"12":12,"2":2,"8":8}],5:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var getClassSelector = require(6);
+/* jshint maxparams:false */
+
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
+/**
+ * @param  {String} name
+ *
+ * @return {Function}
+ */
+module.exports = function ( name ) {
+
+	/**
+	 * @param  {Object}   ctx
+	 * @param  {String}   eventName
+	 * @param  {Array}    data
+	 * @param  {jQuery}   triggerEl
+	 */
+	return function ( ctx, eventName, data, triggerEl ) {
+		var el = (ctx.dom && ctx.dom.el) || ctx.$el || $({});
+		if ( ctx.options[eventName] ) {
+			ctx.options[eventName].apply((el.length === 1 ? el[0] : el.toArray()), data);
+		}
+		(triggerEl || el).trigger(((name || '') + eventName).toLowerCase(), data);
+	};
+
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],6:[function(require,module,exports){
+(function (global){
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var getClassSelector = require(7);
 
 module.exports = {
 	setup: function () {
@@ -506,7 +536,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"6":6}],6:[function(require,module,exports){
+},{"7":7}],7:[function(require,module,exports){
 /**
  * @param  {String} className
  *
@@ -516,8 +546,8 @@ module.exports = function ( className ) {
 	return '.' + className.split(' ').join('.');
 };
 
-},{}],7:[function(require,module,exports){
-var meta = require(10);
+},{}],8:[function(require,module,exports){
+var meta = require(12);
 var htmlClass = meta.ns.htmlClass;
 
 module.exports = {
@@ -527,16 +557,14 @@ module.exports = {
 	isActive: 'is-active'
 };
 
-},{"10":10}],8:[function(require,module,exports){
+},{"12":12}],9:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 var Ctor = require(3);
-var Tabs = require(11);
+var Tabs = require(13);
 var Accordion = require(1);
-var meta = require(10);
-var isPublicMethod = require(17)(meta.publicMethods);
-var appendClass = require(14)(Ctor.prototype.defaults.classes);
-var appendNamespacedClasses = require(15)(Ctor.prototype.defaults.classes, meta.ns.htmlClass);
+var meta = require(12);
+var isPublicMethod = require(11)(meta.publicMethods);
 
 /**
  * @param  {Object|String} options
@@ -544,7 +572,7 @@ var appendNamespacedClasses = require(15)(Ctor.prototype.defaults.classes, meta.
  *
  * @return {jQuery}
  */
-var plugin = module.exports = function ( options, placement ) {
+ var plugin = $.fn[meta.name] = module.exports = function ( options, placement ) {
 
 	options = options || {};
 
@@ -563,14 +591,12 @@ var plugin = module.exports = function ( options, placement ) {
 
 };
 plugin.defaults = Ctor.prototype.defaults;
-plugin.appendClass = appendClass;
-plugin.appendNamespacedClasses = appendNamespacedClasses;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"1":1,"10":10,"11":11,"14":14,"15":15,"17":17,"3":3}],9:[function(require,module,exports){
+},{"1":1,"11":11,"12":12,"13":13,"3":3}],10:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(10);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(12);
 var instance = 0;
 
 module.exports = {
@@ -584,7 +610,30 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"10":10}],10:[function(require,module,exports){
+},{"12":12}],11:[function(require,module,exports){
+(function (global){
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
+/**
+ * @param  {Array} methods
+ *
+ * @return {Function}
+ */
+module.exports = function ( methods ) {
+
+	/**
+	 * @param  {String} name
+	 *
+	 * @return {Boolean}
+	 */
+	return function ( name ) {
+		return typeof(name) === 'string' && $.inArray(name, methods || []) !== -1;
+	};
+
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],12:[function(require,module,exports){
 module.exports = {
 	name: 'tabify',
 	ns: {
@@ -594,7 +643,7 @@ module.exports = {
 	publicMethods: ['destroy','prev','next','move']
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var Tabify = require(3);
 
 var Tabs = module.exports = Tabify.extend({
@@ -613,8 +662,8 @@ var Tabs = module.exports = Tabify.extend({
 
 });
 
-},{"3":3}],12:[function(require,module,exports){
-var objExtend = require(13);
+},{"3":3}],14:[function(require,module,exports){
+var objExtend = require(15);
 
 /**
  * @param  {Object} protoProps
@@ -654,15 +703,17 @@ function extend ( protoProps, staticProps ) {
 var Klass = module.exports = function () {};
 Klass.extend = extend;
 
-},{"13":13}],13:[function(require,module,exports){
+},{"15":15}],15:[function(require,module,exports){
 module.exports = extend
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 function extend(target) {
     for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i]
 
         for (var key in source) {
-            if (source.hasOwnProperty(key)) {
+            if (hasOwnProperty.call(source, key)) {
                 target[key] = source[key]
             }
         }
@@ -671,108 +722,5 @@ function extend(target) {
     return target
 }
 
-},{}],14:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {Object} classes
- *
- * @return {Function}
- */
-module.exports = function ( classes ) {
-
-	/**
-	 * @param  {String} prop
-	 * @param  {String} className
-	 *
-	 * @return {String}
-	 */
-	return function ( prop, className ) {
-		return [classes[prop], className].join(' ');
-	};
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {Object} classes
- * @param  {String} defaultNs
- *
- * @return {Function}
- */
-module.exports = function ( classes, defaultNs ) {
-
-	/**
-	 * @param  {String} ns
-	 *
-	 * @return {Object}
-	 */
-	return function ( ns ) {
-		return $.extend.apply(null, $.map(classes, function ( val, key ) {
-			var o = {};
-			o[key] = $.trim([val, (val.indexOf(defaultNs) !== -1 ? val.replace(defaultNs, ns) : '')].join(' '));
-			return o;
-		}));
-	};
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
-(function (global){
-/* jshint maxparams:false */
-
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {String} name
- *
- * @return {Function}
- */
-module.exports = function ( name ) {
-
-	/**
-	 * @param  {Object}   ctx
-	 * @param  {String}   eventName
-	 * @param  {Array}    data
-	 * @param  {jQuery}   triggerEl
-	 */
-	return function ( ctx, eventName, data, triggerEl ) {
-		var el = (ctx.dom && ctx.dom.el) || ctx.$el || $({});
-		if ( ctx.options[eventName] ) {
-			ctx.options[eventName].apply((el.length === 1 ? el[0] : el.toArray()), data);
-		}
-		(triggerEl || el).trigger(((name || '') + eventName).toLowerCase(), data);
-	};
-
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {Array} methods
- *
- * @return {Function}
- */
-module.exports = function ( methods ) {
-
-	/**
-	 * @param  {String} name
-	 *
-	 * @return {Boolean}
-	 */
-	return function ( name ) {
-		return typeof(name) === 'string' && $.inArray(name, methods || []) !== -1;
-	};
-
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[8])(8)
+},{}]},{},[9])(9)
 });
