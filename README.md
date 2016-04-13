@@ -154,19 +154,17 @@ Setup tab instance.
 $('.Tab').tabify({
 	type: 'tab',
 	initial: 1,
-	// initial: 'foo',
-	// initial: function () { return 1; }
-	tab: '.tab',
-	pane: '.pane',
+	tab: '.Tab-toggler',
+	pane: '.Tab-pane',
 	namespace: 'Foobar',
 	select: function ( tab, pane ) {
-		// Do something on select.
+		// I’m selected!
 	},
 	deselect: function ( tab, pane ) {
-		// Do something on deselect.
+		// I’m deselected!
 	},
 	create: function ( tab, pane ) {
-		// Do something on create.
+		// I’m created!
 	}
 });
 ```
